@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap');
+p, span, button, div, h1 {
+    font-family: 'Roboto Condensed', sans-serif;
+}
 
 .toDo {
     max-width: 700px;
@@ -20,6 +24,7 @@ button {
     height: 30px;
     /* width: 30px; */
     margin: 5px;
+    box-shadow: 2px 1px 1px grey;
     
 }
 
@@ -33,27 +38,22 @@ button {
 
 button:hover {
     background-color: lightgrey;
+    
 }
 
 button:active {
-    background-color: lightgrey;
+    box-shadow: none;
 }
 
 .header_buttons {
     display: flex;
-    justify-content:space-between;
     align-items: center;
     justify-content: center;
+    gap: 70px;
     
     
 
 }
-
-/* .flex_date_sort {
-    display: flex;
-    align-items: center;
-    
-} */
 
 .tasks_list {
     display: flex;
@@ -61,6 +61,7 @@ button:active {
     justify-items: center;
     margin: auto;
     max-width: fit-content;
+    justify-content: space-between;
 }
 
 .task {
@@ -71,12 +72,12 @@ button:active {
     height:50px;
     margin: 10px;
     align-content: center;
-    /* text-align: center; */
+    justify-content: space-between;
     width: 500px;
+    box-shadow: 3px 2px 2px grey;
 }
 
 p {
-    width: 350px;
     text-align: left;
 }
 
@@ -88,10 +89,6 @@ p {
     .task {
         width: 280px;
         
-    }
-
-    p {
-        width: 135px;
     }
 }
 
