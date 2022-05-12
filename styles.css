@@ -1,0 +1,94 @@
+
+
+.heading {
+    text-decoration: dashed;
+    text-align: center;
+}
+
+.new_task_wrapper {
+    text-align: center;
+}
+
+.new_task {
+    border: solid 1px grey;
+    border-radius: 7px;
+}
+
+button {
+    border-radius: 7px;
+    border-style: hidden;
+    background-color: rgb(167, 124, 124);
+    max-height: 20px;
+    ;
+}
+
+button:hover {
+    background-color: grey;
+}
+
+button:active {
+    background-color: lightgrey;
+}
+
+.flex_buttones {
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    max-width: 300px;
+    margin: auto;
+    
+    
+
+}
+
+.flex_date_sort {
+    display: flex;
+    align-items: center;
+    
+}
+
+.tasks_list {
+    margin: auto;
+    width: 50%;
+}
+
+.task {
+    display: flex;
+    background-color: rgb(167, 124, 124);
+    
+    border-radius: 8px;
+    height:50px;
+    margin: 10px;
+    justify-content: space-between;
+}
+
+.task_name {
+    display: block;
+    text-align: left;
+}
+
+span {
+    line-height: 50px;
+    
+ }
+
+.done {
+    line-height: 50px;
+}
+
+.date_delete {
+    padding-right: 10px;
+    
+}
+
+
+.page_number_container {
+    display: flex;
+    margin: auto;
+    width: 25%;
+    align-content: space-between;
+   
+}
+
+
+
