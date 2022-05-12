@@ -8,90 +8,89 @@
     <title>toDo</title>
 </head>
 <body>
-    <div class="heading">
-    <h1>ToDo</h1>
-    </div>
+    <div class="toDo">
+        <h1>ToDo</h1>
 
-    <div class="new_task_wrapper">
-        <input type="text" class="new_task" placeholder="I want to...">
-    </div>
+        <div class="add_task_container">
+            <input type="text" class="add_task" placeholder="I want to...">
+        </div>
 
-    <div class="flex_buttones">
-        <div>
-        <button class="btn_all">All</button>
-        <button class="btn_Done">Done</button>
-        <button class="btn_Undone">Undone</button>
+        <div class="header_buttons">
+            <div>
+            <button>All</button>
+            <button>Done</button>
+            <button>Undone</button>
+            </div>
+            <div class="flex_date_sort">
+                <span>Sort by date</span>
+                <button class="arrow_btn">↑</button>
+                <button class="arrow_btn">↓</button>
+            </div>
         </div>
-        <div class="flex_date_sort">
-            <span>Sort by date</span>
-            <button class="sort_date_up">↑</button>
-            <button class="sort_date_down">↓</button>
-        </div>
-    </div>
 
-    <div class="tasks_list">
-        <div class="task">
-            <div class="done">
-                <input type="checkbox" class="done">
+        <div class="tasks_list">
+            <div class="task">
+                <div class="left_side">
+                    <input type="checkbox" class="done">
+                    <p class="task_name">Do something</p>
+                </div>
+                <div class="right_side">
+                    <span>18.05.2022</span>
+                    <input type="button" class="trashcan">
+                </div>
             </div>
-            <span class="task_name">Do something</span>
-            <div class="date_delete">
-                <span>18.05.2022</span>
-                <input type="button" class="trash" value="delete">
+            <div class="task">
+                <div class="left_side">
+                    <input type="checkbox" class="done">
+                    <p class="task_name">Do something</p>
+                </div>
+                <div class="right_side">
+                    <span>18.05.2022</span>
+                    <input type="button" class="trashcan">
+                </div>
+            </div>
+            <div class="task">
+                <div class="left_side">
+                    <input type="checkbox" class="done">
+                    <p class="task_name">Do something</p>
+                </div>
+                <div class="right_side">
+                    <span>18.05.2022</span>
+                    <input type="button" class="trashcan">
+                </div>
+            </div>
+            <div class="task">
+                <div class="left_side">
+                    <input type="checkbox" class="done">
+                    <p class="task_name">Do something</p>
+                </div>
+                <div class="right_side">
+                    <span>18.05.2022</span>
+                    <input type="button" class="trashcan">
+                </div>
+            </div>
+            <div class="task">
+                <div class="left_side">
+                    <input type="checkbox" class="done">
+                    <p class="task_name">Do something</p>
+                </div>
+                <div class="right_side">
+                    <span>18.05.2022</span>
+                    <input type="button" class="trashcan">
+                </div>
+                
             </div>
         </div>
-        <div class="task">
-            <div class="done">
-                <input type="checkbox" class="done">
-            </div>
-            <span class="task_name">Do more</span>
-            <div class="date_delete">
-                <span>18.05.2022</span>
-                <input type="button" class="trash" value="delete">
-            </div>
-        </div>
-        <div class="task">
-            <div class="done">
-                <input type="checkbox" class="done">
-            </div>
-            <span class="task_name">Learn React</span>
-            <div class="date_delete">
-                <span>18.05.2022</span>
-                <input type="button" class="trash" value="delete">
-            </div>
-        </div>
-        <div class="task">
-            <div class="done">
-                <input type="checkbox" class="done">
-            </div>
-            <span class="task_name">"Unreadable"</span>
-            <div class="date_delete">
-                <span>18.05.2022</span>
-                <input type="button" class="trash" value="delete">
-            </div>
-        </div>
-        <div class="task">
-            <div class="done">
-                <input type="checkbox" class="done">
-            </div>
-            <span class="task_name">Authorization</span>
-            <div class="date_delete">
-                <span>18.05.2022</span>
-                <input type="button" class="trash" value="delete">
-            </div>
-            
-        </div>
-    </div>
 
-    <div class="page_number_container">
-        <button class="page_number">&lt&lt</button>
-        <button class="page_number">1</button>
-        <button class="page_number">2</button>
-        <button class="page_number">3</button>
-        <button class="page_number">4</button>
-        <button class="page_number">5</button>
-        <button class="page_number">&gt&gt</button>
+        <div class="page_number_container">
+            <button class="page_number">&lt&lt</button>
+            <button class="page_number">1</button>
+            <button class="page_number">2</button>
+            <button class="page_number">3</button>
+            <button class="page_number">4</button>
+            <button class="page_number">5</button>
+            <button class="page_number">&gt&gt</button>
+        </div>
     </div>
-    
 </body>
 </html>

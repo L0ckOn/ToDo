@@ -1,93 +1,127 @@
 
-
-.heading {
-    text-decoration: dashed;
+.toDo {
+    max-width: 700px;
     text-align: center;
+    margin: auto;
 }
 
-.new_task_wrapper {
-    text-align: center;
-}
-
-.new_task {
+.add_task {
     border: solid 1px grey;
     border-radius: 7px;
+    height: 30px;
+    width: 250px;
+    margin-top: 20px;
 }
 
 button {
     border-radius: 7px;
     border-style: hidden;
-    background-color: rgb(167, 124, 124);
-    max-height: 20px;
-    ;
+    background-color: rgb(221, 241, 216);
+    height: 30px;
+    /* width: 30px; */
+    margin: 5px;
+    
+}
+
+.arrow_btn {
+    background-color: rgb(250, 224, 228);
+}
+
+.page_number {
+    width: 30px;
 }
 
 button:hover {
-    background-color: grey;
+    background-color: lightgrey;
 }
 
 button:active {
     background-color: lightgrey;
 }
 
-.flex_buttones {
+.header_buttons {
     display: flex;
     justify-content:space-between;
     align-items: center;
-    max-width: 300px;
-    margin: auto;
+    justify-content: center;
     
     
 
 }
 
-.flex_date_sort {
+/* .flex_date_sort {
     display: flex;
     align-items: center;
     
-}
+} */
 
 .tasks_list {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
     margin: auto;
-    width: 50%;
+    max-width: fit-content;
 }
 
 .task {
     display: flex;
-    background-color: rgb(167, 124, 124);
+    background-color: rgb(240, 235, 195);
     
-    border-radius: 8px;
+    border-radius: 7px;
     height:50px;
     margin: 10px;
-    justify-content: space-between;
+    align-content: center;
+    /* text-align: center; */
+    width: 500px;
 }
 
-.task_name {
-    display: block;
+p {
+    width: 350px;
     text-align: left;
 }
 
-span {
-    line-height: 50px;
-    
- }
+@media (max-width: 767px) {
+    .tasks_list {
+        width: 55%;
+    }
 
-.done {
-    line-height: 50px;
+    .task {
+        width: 280px;
+        
+    }
+
+    p {
+        width: 135px;
+    }
 }
 
-.date_delete {
-    padding-right: 10px;
-    
-}
-
-
-.page_number_container {
+.left_side {
     display: flex;
-    margin: auto;
-    width: 25%;
-    align-content: space-between;
-   
+    gap: 10px;
+    align-items: center;
+}
+
+.right_side {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    
+}
+
+.trashcan {
+    background: url(https://www.svgrepo.com/show/359400/trashcan.svg)center center/cover no-repeat;
+    height: 30px;
+    width: 30px;
+    vertical-align: middle;
+    border: none;
+}
+
+.trashcan:hover {
+    background-color: grey;
+}
+
+.trashcan:active {
+    background-color: lightgrey;
 }
 
 
