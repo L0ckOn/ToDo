@@ -82,14 +82,16 @@ p {
 }
 
 @media (max-width: 767px) {
-    .tasks_list {
-        width: 55%;
-    }
 
+    .header_buttons {
+        gap: 30px;
+    }
+    
     .task {
         width: 280px;
         
     }
+
 }
 
 .left_side {
