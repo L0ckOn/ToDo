@@ -1,10 +1,22 @@
 import React, { useState } from 'react';
 
 export default function Task(props) {
+
+    const [check, setCheck] = useState(false);
+
+    const handleCheck = ({target}) => {
+        console.log(target.checked)
+        setCheck(true);
+    }
+
     return (
         <div className='task' key={props.task.id}>
             <div className='left_side'>
-                <input type='checkbox' />
+                <input 
+                    type='checkbox' 
+                    defaultChecked={false}
+                    onClick={handleCheck}
+                    />
                 <p>{props.task.name}</p>
             </div>
             

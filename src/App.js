@@ -12,15 +12,23 @@ function App({ target }) {
       const newTask = {
         id: Date.now(),
         name: props.target.value,
+        isDone: false,
       };
       setTasks([newTask, ...tasks]);
       setTaskName('');
     }
   };
 
-  const selectAllTasks = (smh) => {
+  const showAllTasks = (smh) => {
     console.log(smh)
 
+  }
+
+  const showDoneTasks = () => {
+
+  }
+
+  const showUndoneTasks = () => {
 
   }
 
@@ -51,9 +59,9 @@ function App({ target }) {
 
       <div className="header_buttons">
           <div>
-          <button className='btn' onClick={() => selectAllTasks()}>All</button>
-          <button className='btn'>Done</button>
-          <button className='btn'>Undone</button>
+          <button className='btn' onClick={showAllTasks}>All</button>
+          <button className='btn' onClick={showDoneTasks}>Done</button>
+          <button className='btn' onClick={showUndoneTasks}>Undone</button>
           </div>
           <div className="flex_date_sort">
               <span>Sort by date</span>
