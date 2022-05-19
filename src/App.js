@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import TaskList from './components/task-list';
 
 
@@ -19,26 +19,29 @@ function App({ target }) {
     }
   };
 
-  const showAllTasks = (smh) => {
-    console.log(smh)
+  const getSortedTasks = ({target}) => {
+    console.log('sorted!');
+    if (target.lastChild.data === 'All') {
+      return getAllTasks;
+    }
+    else if (target.lastChild.data === 'Done') {
+      console.log('only Done')
+    }
+    else if (target.lastChild.data === 'Undone') {
+      console.log('only Undone')
+    }
+    else if (target.lastChild.data === '↑') {
+      console.log('from new')
+    }
+    else if (target.lastChild.data === '↓') {
+      console.log('from old')
+    }    
 
   }
 
-  const showDoneTasks = () => {
-
-  }
-
-  const showUndoneTasks = () => {
-
-  }
-
-  const sortTasksNew = () => {
-    setTasks([...tasks].sort((a, b) => b.id - a.id));
-  };
-
-  const sortTasksOld = () => {
-    setTasks([...tasks].sort((a, b) => a.id - b.id));
-  };
+  const getAllTasks = useMemo(() => {
+    return [...tasks].filter(task => task.idDone);
+  }, [tasks]);
 
   const removeTask = (task) => {
     setTasks(tasks.filter((cur_task) => cur_task.id !== task.id))
@@ -59,14 +62,14 @@ function App({ target }) {
 
       <div className="header_buttons">
           <div>
-          <button className='btn' onClick={showAllTasks}>All</button>
-          <button className='btn' onClick={showDoneTasks}>Done</button>
-          <button className='btn' onClick={showUndoneTasks}>Undone</button>
+          <button className='btn' onClick={getSortedTasks}>All</button>
+          <button className='btn' onClick={getSortedTasks}>Done</button>
+          <button className='btn' onClick={getSortedTasks}>Undone</button>
           </div>
           <div className="flex_date_sort">
               <span>Sort by date</span>
-              <button class="btn arrow_btn" onClick={sortTasksNew}>↑</button>
-              <button class="btn arrow_btn" onClick={sortTasksOld}>↓</button>
+              <button class="btn arrow_btn" onClick={getSortedTasks}>↑</button>
+              <button class="btn arrow_btn" onClick={getSortedTasks}>↓</button>
           </div>
       </div>
       

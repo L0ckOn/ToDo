@@ -4,8 +4,8 @@ export default function Task(props) {
 
     const [check, setCheck] = useState(false);
 
-    const handleCheck = ({target}) => {
-        console.log(target.checked)
+    const handleCheck = () => {
+        props.task.isDone = true;
         setCheck(true);
     }
 
