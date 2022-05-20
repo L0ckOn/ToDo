@@ -1,9 +1,12 @@
-import React, { useMemo, useState } from 'react';
+import { __esModule } from '@testing-library/jest-dom/dist/matchers';
+import React, { useMemo, useRef, useState } from 'react';
 import TaskList from './components/task-list';
+import ReactPaginate from 'react-paginate';
 
 
 function App({ target }) {
   const [tasks, setTasks] = useState([]);
+  const allTasks = useRef([]);
 
   const [taskName, setTaskName] = useState('');
 
@@ -19,32 +22,32 @@ function App({ target }) {
     }
   };
 
-  const getSortedTasks = ({target}) => {
-    console.log('sorted!');
-    if (target.lastChild.data === 'All') {
-      return getAllTasks;
+  const sortByDate = ({ target }) => {
+    if (target.lastChild.data === '↑') {
+      setTasks([...tasks].sort( (a, b) => a.id - b.id))
     }
-    else if (target.lastChild.data === 'Done') {
-      console.log('only Done')
+    if (target.lastChild.data === '↓') {
+      setTasks([...tasks].sort( (a, b) => b.id - a.id))
     }
-    else if (target.lastChild.data === 'Undone') {
-      console.log('only Undone')
-    }
-    else if (target.lastChild.data === '↑') {
-      console.log('from new')
-    }
-    else if (target.lastChild.data === '↓') {
-      console.log('from old')
-    }    
-
   }
 
-  const getAllTasks = useMemo(() => {
-    return [...tasks].filter(task => task.idDone);
-  }, [tasks]);
+  const [sort, setSort] = useState('all');
+
+  const sortedTasks = useMemo( () => {
+    console.log('ommit')
+    switch(sort) {
+      case 'all':
+        return tasks;
+      case 'done':
+        return tasks.filter( (task) => task.isDone);
+      case 'undone':
+        return tasks.filter( (task) => !task.isDone)
+    }
+
+  }, [tasks, sort])
 
   const removeTask = (task) => {
-    setTasks(tasks.filter((cur_task) => cur_task.id !== task.id))
+    setTasks(tasks.filter((cur_task) => cur_task.id !== task.id));
   };
 
   return (
@@ -62,18 +65,18 @@ function App({ target }) {
 
       <div className="header_buttons">
           <div>
-          <button className='btn' onClick={getSortedTasks}>All</button>
-          <button className='btn' onClick={getSortedTasks}>Done</button>
-          <button className='btn' onClick={getSortedTasks}>Undone</button>
+          <button className='btn' onClick={() => setSort('all')}>All</button>
+          <button className='btn' onClick={() => setSort('done')}>Done</button>
+          <button className='btn' onClick={() => setSort('undone')} >Undone</button>
           </div>
           <div className="flex_date_sort">
               <span>Sort by date</span>
-              <button class="btn arrow_btn" onClick={getSortedTasks}>↑</button>
-              <button class="btn arrow_btn" onClick={getSortedTasks}>↓</button>
+              <button class="btn arrow_btn" onClick={sortByDate}>↑</button>
+              <button class="btn arrow_btn" onClick={sortByDate}>↓</button>
           </div>
       </div>
       
-        <TaskList remove={removeTask} tasks={tasks} />
+        <TaskList remove={removeTask} tasks={sortedTasks} />
 
       <div class="page_number_container">
             <button class="btn page_number">{'<<'}</button>

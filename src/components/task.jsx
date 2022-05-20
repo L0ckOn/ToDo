@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 
 export default function Task(props) {
-
-    const [check, setCheck] = useState(false);
-
     const handleCheck = () => {
-        props.task.isDone = true;
-        setCheck(true);
+        props.task.isDone = props.task.isDone ? false : true;
     }
 
     return (
@@ -14,7 +10,7 @@ export default function Task(props) {
             <div className='left_side'>
                 <input 
                     type='checkbox' 
-                    defaultChecked={false}
+                    defaultChecked={props.task.isDone}
                     onClick={handleCheck}
                     />
                 <p>{props.task.name}</p>
