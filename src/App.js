@@ -1,7 +1,7 @@
 import { __esModule } from '@testing-library/jest-dom/dist/matchers';
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import TaskList from './components/task-list';
-import ReactPaginate from 'react-paginate';
+import Pages from './components/pages';
 
 
 function App({ target }) {
@@ -34,7 +34,6 @@ function App({ target }) {
   const [sort, setSort] = useState('all');
 
   const sortedTasks = useMemo( () => {
-    console.log('ommit')
     switch(sort) {
       case 'all':
         return tasks;
@@ -49,6 +48,14 @@ function App({ target }) {
   const removeTask = (task) => {
     setTasks(tasks.filter((cur_task) => cur_task.id !== task.id));
   };
+
+  const [currentPage, setCurrentPage] = useState(1)
+  const tasksPerPage = 5;
+  const lastTaskIndex = currentPage * tasksPerPage
+  const firstTaskIndex = lastTaskIndex - tasksPerPage
+  const currentTasks = sortedTasks.slice(firstTaskIndex, lastTaskIndex);
+
+  const paginate = pageNumber => setCurrentPage(pageNumber);
 
   return (
     <div className='App'>
@@ -76,18 +83,13 @@ function App({ target }) {
           </div>
       </div>
       
-        <TaskList remove={removeTask} tasks={sortedTasks} />
-
-      <div class="page_number_container">
-            <button class="btn page_number">{'<<'}</button>
-            <button class="btn page_number">1</button>
-            <button class="btn page_number">2</button>
-            <button class="btn page_number">3</button>
-            <button class="btn page_number">4</button>
-            <button class="btn page_number">5</button>
-            <button class="btn page_number">{'>>'}</button>
-        </div>
-
+        <TaskList remove={removeTask} tasks={currentTasks} />
+      <Pages 
+        totalTasks={sortedTasks.length}
+        tasksPerPage={tasksPerPage}
+        paginate={paginate}
+        curPage={currentPage}
+      />
     </div>
   );
 }
