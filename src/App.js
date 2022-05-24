@@ -6,8 +6,6 @@ import Pages from './components/pages';
 
 function App({ target }) {
   const [tasks, setTasks] = useState([]);
-  const allTasks = useRef([]);
-
   const [taskName, setTaskName] = useState('');
 
   const addNewTask = (props) => {
@@ -17,45 +15,75 @@ function App({ target }) {
         name: props.target.value,
         isDone: false,
       };
-      setTasks([newTask, ...tasks]);
+      const sortDate = document.getElementById('↑');
+      if (sortDate.disabled)
+        setTasks([...tasks, newTask]);
+      else
+        setTasks([newTask, ...tasks])
       setTaskName('');
+
     }
   };
 
+  const [sortUpDisabled, setSortUpDisabled] = useState(false);
+  const [sortDownDisabled, setSortDownDisabled] = useState(true);
   const sortByDate = ({ target }) => {
     if (target.lastChild.data === '↑') {
-      setTasks([...tasks].sort( (a, b) => a.id - b.id))
+      setTasks([...tasks].sort( (a, b) => a.id - b.id));
+      setSortUpDisabled(true);
+      setSortDownDisabled(false);
     }
     if (target.lastChild.data === '↓') {
-      setTasks([...tasks].sort( (a, b) => b.id - a.id))
+      setTasks([...tasks].sort( (a, b) => b.id - a.id));
+      setSortUpDisabled(false);
+      setSortDownDisabled(true);
     }
   }
-
+  // disabling sorting buttons
+  const [sortAll, setSortAll] = useState(true);
+  const [sortDone, setSortDone] = useState(false);
+  const [sortUndone, setSortUndone] = useState(false);
   const [sort, setSort] = useState('all');
+  // --------------------------
+  const [currentPage, setCurrentPage] = useState(1)
+  const tasksPerPage = 5;
+  const lastTaskIndex = currentPage * tasksPerPage
+  const firstTaskIndex = lastTaskIndex - tasksPerPage
+
+  const paginate = pageNumber => {
+    setCurrentPage(pageNumber)
+    const curPage = document.getElementById(pageNumber)
+    console.log(curPage)};
 
   const sortedTasks = useMemo( () => {
     switch(sort) {
       case 'all':
+        paginate(1);
+        setSortAll(true);
+        setSortDone(false);
+        setSortUndone(false);
         return tasks;
       case 'done':
+        paginate(1);
+        setSortAll(false);
+        setSortDone(true);
+        setSortUndone(false);
         return tasks.filter( (task) => task.isDone);
       case 'undone':
+        paginate(1);
+        setSortAll(false);
+        setSortDone(false);
+        setSortUndone(true);
         return tasks.filter( (task) => !task.isDone)
     }
 
   }, [tasks, sort])
 
+  const currentTasks = sortedTasks.slice(firstTaskIndex, lastTaskIndex);
+
   const removeTask = (task) => {
     setTasks(tasks.filter((cur_task) => cur_task.id !== task.id));
   };
-
-  const [currentPage, setCurrentPage] = useState(1)
-  const tasksPerPage = 5;
-  const lastTaskIndex = currentPage * tasksPerPage
-  const firstTaskIndex = lastTaskIndex - tasksPerPage
-  const currentTasks = sortedTasks.slice(firstTaskIndex, lastTaskIndex);
-
-  const paginate = pageNumber => setCurrentPage(pageNumber);
 
   return (
     <div className='App'>
@@ -72,14 +100,14 @@ function App({ target }) {
 
       <div className="header_buttons">
           <div>
-          <button className='btn' onClick={() => setSort('all')}>All</button>
-          <button className='btn' onClick={() => setSort('done')}>Done</button>
-          <button className='btn' onClick={() => setSort('undone')} >Undone</button>
+          <button className='btn' disabled={sortAll} onClick={() => setSort('all')}>All</button>
+          <button className='btn' disabled={sortDone} onClick={() => setSort('done')}>Done</button>
+          <button className='btn' disabled={sortUndone} onClick={() => setSort('undone')} >Undone</button>
           </div>
           <div className="flex_date_sort">
               <span>Sort by date</span>
-              <button class="btn arrow_btn" onClick={sortByDate}>↑</button>
-              <button class="btn arrow_btn" onClick={sortByDate}>↓</button>
+              <button class="btn arrow_btn" id='↑' disabled={sortUpDisabled} onClick={sortByDate}>↑</button>
+              <button class="btn arrow_btn" disabled={sortDownDisabled} onClick={sortByDate}>↓</button>
           </div>
       </div>
       
