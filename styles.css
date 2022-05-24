@@ -28,6 +28,11 @@ p, span, button, div, h1 {
     
 }
 
+.btn:disabled {
+    box-shadow: none;
+    background-color: lightgrey;
+}
+
 .arrow_btn {
     background-color: rgb(250, 224, 228);
 }
