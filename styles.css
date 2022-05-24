@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap');
+p, span, button, div, h1 {
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+.toDo {
+    min-width: 700px;
+    text-align: center;
+    margin: auto;
+}
+
+.add_task {
+    border: solid 1px grey;
+    border-radius: 7px;
+    height: 30px;
+    width: 250px;
+    margin-top: 20px;
+}
+
+.btn {
+    border-radius: 7px;
+    border-style: hidden;
+    background-color: rgb(221, 241, 216);
+    height: 30px;
+    /* width: 30px; */
+    margin: 5px;
+    box-shadow: 2px 1px 1px grey;
+    
+}
+
+.arrow_btn {
+    background-color: rgb(250, 224, 228);
+}
+
+.page_number {
+    width: 30px;
+}
+
+button:hover {
+    background-color: lightgrey;
+    
+}
+
+button:active {
+    box-shadow: none;
+}
+
+.header_buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 70px;
+    
+    
+
+}
+
+.tasks_list {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    margin: auto;
+    max-width: fit-content;
+    justify-content: space-between;
+}
+
+.task {
+    display: flex;
+    background-color: rgb(240, 235, 195);
+    
+    border-radius: 7px;
+    min-height:50px;
+    width: 500px;
+    margin: 10px;
+    align-content: center;
+    justify-content: space-between;
+    box-shadow: 3px 2px 2px grey;
+}
+
+p {
+    word-break: break-all;
+    white-space: normal;
+    max-width: 500px;
+    text-align: left;
+}
+
+@media (max-width: 767px) {
+
+    .header_buttons {
+        gap: 30px;
+    }
+    
+    .task {
+        width: 280px;
+        
+    }
+
+}
+
+.left_side {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.right_side {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    
+}
+
+.trashcan {
+    background: url(https://www.svgrepo.com/show/359400/trashcan.svg)center center/cover no-repeat;
+    height: 30px;
+    width: 30px;
+    vertical-align: middle;
+    border: none;
+}
+
+.trashcan:hover {
+    background-color: grey;
+}
+
+.trashcan:active {
+    background-color: lightgrey;
+}
+
+
+
