@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 export default function Task(props) {
     const handleCheck = () => {
@@ -17,7 +17,7 @@ export default function Task(props) {
             </div>
             
             <div className='right_side'>
-                <span>{(new Date(props.task.id)).toLocaleDateString()}</span>
+                <span>{(new Date(props.task.createdAt)).toLocaleDateString()}</span>
                 <input 
                     type='button' 
                     className='trashcan' 

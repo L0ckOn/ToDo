@@ -1,18 +1,18 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 
 
 export default function Pages(props) {
     const pageNumbers = [];
-    const totalPages = Math.ceil(props.totalTasks / props.tasksPerPage);
+    const totalPages = Math.ceil(props.totalTasks / 5);
 
     for (let i = 1; i <= totalPages; i++) {
         pageNumbers.push(i);
     }
     return (
-        <div class="page_number_container">
+        <div className="page_number_container">
             <button 
-                class="btn page_number"
-                onClick={() => props.paginate((props.curPage - 1) ? 
+                className="btn page_number"
+                onClick={() => props.paginate((props.curPage - 1 > 0) ? 
                                         props.curPage - 1 : 
                                         1)}
                 id='<<'
@@ -26,7 +26,7 @@ export default function Pages(props) {
                 )
             )}
             <button 
-            class="btn page_number"
+            className="btn page_number"
             onClick={() => props.paginate((props.curPage + 1 > pageNumbers.length) ? 
                                     props.curPage : 
                                     props.curPage + 1)}

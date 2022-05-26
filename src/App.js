@@ -1,34 +1,47 @@
-import { __esModule } from '@testing-library/jest-dom/dist/matchers';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+
+import React, { useEffect, useMemo, useState } from 'react';
 import TaskList from './components/task-list';
 import Pages from './components/pages';
+import axios, { AxiosError } from 'axios';
 
 
 function App({ target }) {
-  const [tasks, setTasks] = useState([]);
   const [taskName, setTaskName] = useState('');
+  const [tasks, setTasks] = useState([])
+  const [totalTasks, setTotalTasks] = useState(0)
+  // disabling sorting buttons
+  const [sortAll, setSortAll] = useState(true);
+  const [sortDone, setSortDone] = useState(false);
+  const [sortUndone, setSortUndone] = useState(false);
+  const [sort, setSort] = useState('all');
+  // --------------------------
+  const [sortUpDisabled, setSortUpDisabled] = useState(false);
+  const [sortDownDisabled, setSortDownDisabled] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1)
+  
+  axios.get("https://todo-api-learning.herokuapp.com/v1/tasks/3?pp=5&page=1")
+  .then(response => setTotalTasks(response.data.count))
+  .catch(err => console.log(err));
+  
+  const addNewTask = async (props) => {
 
-  const addNewTask = (props) => {
     if (props.key === 'Enter' && props.target.value) {
-      const newTask = {
-        id: Date.now(),
-        name: props.target.value,
-        isDone: false,
-      };
-      const sortDate = document.getElementById('↑');
-      if (sortDate.disabled)
-        setTasks([...tasks, newTask]);
-      else
-        setTasks([newTask, ...tasks])
-      setTaskName('');
-
+      setTaskName('')
+      try {
+        await axios.post("https://todo-api-learning.herokuapp.com/v1/task/3", {
+          "name": props.target.value,
+          "done": false,
+        })
+      } catch (AxiosError) {
+        console.log(AxiosError, 'probably task with the same name')
+      }
+      
     }
   };
 
-  const [sortUpDisabled, setSortUpDisabled] = useState(false);
-  const [sortDownDisabled, setSortDownDisabled] = useState(true);
   const sortByDate = ({ target }) => {
     if (target.lastChild.data === '↑') {
+      // надо взять все таски одновременно
       setTasks([...tasks].sort( (a, b) => a.id - b.id));
       setSortUpDisabled(true);
       setSortDownDisabled(false);
@@ -39,21 +52,12 @@ function App({ target }) {
       setSortDownDisabled(true);
     }
   }
-  // disabling sorting buttons
-  const [sortAll, setSortAll] = useState(true);
-  const [sortDone, setSortDone] = useState(false);
-  const [sortUndone, setSortUndone] = useState(false);
-  const [sort, setSort] = useState('all');
-  // --------------------------
-  const [currentPage, setCurrentPage] = useState(1)
-  const tasksPerPage = 5;
-  const lastTaskIndex = currentPage * tasksPerPage
-  const firstTaskIndex = lastTaskIndex - tasksPerPage
-
-  const paginate = pageNumber => {
-    setCurrentPage(pageNumber)
-    const curPage = document.getElementById(pageNumber)
-    console.log(curPage)};
+//  ------------------------------------
+  const paginate = async (pageNumber) => {
+    const response = await axios.get(`https://todo-api-learning.herokuapp.com/v1/tasks/3?pp=5&page=${pageNumber}`)
+    setTasks(response.data.tasks)
+    console.log(1)
+    }
 
   const sortedTasks = useMemo( () => {
     switch(sort) {
@@ -79,10 +83,9 @@ function App({ target }) {
 
   }, [tasks, sort])
 
-  const currentTasks = sortedTasks.slice(firstTaskIndex, lastTaskIndex);
-
   const removeTask = (task) => {
-    setTasks(tasks.filter((cur_task) => cur_task.id !== task.id));
+    axios.delete(`https://todo-api-learning.herokuapp.com/v1/task/3/${task.uuid}`)
+    .catch(err => console.log(err));
   };
 
   return (
@@ -106,15 +109,14 @@ function App({ target }) {
           </div>
           <div className="flex_date_sort">
               <span>Sort by date</span>
-              <button class="btn arrow_btn" id='↑' disabled={sortUpDisabled} onClick={sortByDate}>↑</button>
-              <button class="btn arrow_btn" disabled={sortDownDisabled} onClick={sortByDate}>↓</button>
+              <button className="btn arrow_btn" id='↑' disabled={sortUpDisabled} onClick={sortByDate}>↑</button>
+              <button className="btn arrow_btn" disabled={sortDownDisabled} onClick={sortByDate}>↓</button>
           </div>
       </div>
       
-        <TaskList remove={removeTask} tasks={currentTasks} />
+        <TaskList remove={removeTask} tasks={tasks} />
       <Pages 
-        totalTasks={sortedTasks.length}
-        tasksPerPage={tasksPerPage}
+        totalTasks={totalTasks}
         paginate={paginate}
         curPage={currentPage}
       />
