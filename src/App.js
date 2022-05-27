@@ -19,9 +19,11 @@ function App({ target }) {
   const [sortDownDisabled, setSortDownDisabled] = useState(true);
   const [currentPage, setCurrentPage] = useState(1)
   
-  axios.get("https://todo-api-learning.herokuapp.com/v1/tasks/3?pp=5&page=1")
-  .then(response => setTotalTasks(response.data.count))
-  .catch(err => console.log(err));
+  useEffect(() => {
+    axios.get("https://todo-api-learning.herokuapp.com/v1/tasks/3?pp=5&page=1")
+    .then(response => setTotalTasks(response.data.count))
+    .catch(err => console.log(err));
+  }, []);
   
   const addNewTask = async (props) => {
 
