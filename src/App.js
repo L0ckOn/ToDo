@@ -21,7 +21,10 @@ function App({ target }) {
   
   useEffect(() => {
     axios.get("https://todo-api-learning.herokuapp.com/v1/tasks/3?pp=5&page=1")
-    .then(response => setTotalTasks(response.data.count))
+    .then(response => {
+      setTotalTasks(response.data.count)
+      setTasks(response.data.tasks)
+    })
     .catch(err => console.log(err));
   }, []);
   
@@ -58,10 +61,11 @@ function App({ target }) {
   const paginate = async (pageNumber) => {
     const response = await axios.get(`https://todo-api-learning.herokuapp.com/v1/tasks/3?pp=5&page=${pageNumber}`)
     setTasks(response.data.tasks)
+    setCurrentPage(pageNumber);
     console.log(1)
     }
 
-  const sortedTasks = useMemo( () => {
+  useMemo( () => {
     switch(sort) {
       case 'all':
         paginate(1);
@@ -83,7 +87,7 @@ function App({ target }) {
         return tasks.filter( (task) => !task.isDone)
     }
 
-  }, [tasks, sort])
+  }, [sort])
 
   const removeTask = (task) => {
     axios.delete(`https://todo-api-learning.herokuapp.com/v1/task/3/${task.uuid}`)
