@@ -59,11 +59,20 @@ function App({ target }) {
   }
 //  ------------------------------------
   const paginate = async (pageNumber) => {
-    const response = await axios.get(`https://todo-api-learning.herokuapp.com/v1/tasks/3?pp=5&page=${pageNumber}`)
-    setTasks(response.data.tasks)
-    setCurrentPage(pageNumber);
-    console.log(1)
+    // https://todo-api-learning.herokuapp.com/v1/tasks/3?pp=5&page=
+    if (sortDone || sortUndone) {
+      const url = `https://todo-api-learning.herokuapp.com/v1/tasks/3?filterBy=${() => sortDone ? 'done' : 'undone'}&order=${() => sortUpDisabled ? 'asc' : 'desc'}&pp=5&page=${pageNumber}`
+      const response = await axios.get(url)
+      setTasks(response.data.tasks)
+      setCurrentPage(pageNumber);
+
+    } else if (sortDone || sortUndone || sortByDate) {
+      const url = `https://todo-api-learning.herokuapp.com/v1/tasks/3?filterBy=order=${() => sortUpDisabled ? 'asc' : 'desc'}&pp=5&page=${pageNumber}`
+      const response = await axios.get(url)
+      setTasks(response.data.tasks)
+      setCurrentPage(pageNumber);
     }
+  }
 
   useMemo( () => {
     switch(sort) {
