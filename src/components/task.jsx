@@ -1,27 +1,33 @@
+import axios from 'axios';
 import React from 'react';
 
-export default function Task(props) {
+export default function Task({ task, remove }) {
+
     const handleCheck = () => {
-        props.task.isDone = props.task.isDone ? false : true;
+        axios.patch(
+            `https://todo-api-learning.herokuapp.com/v1/task/3/${task.uuid}`,
+            {"done": true})
+        .catch(err => console.log(err));
     }
 
     return (
-        <div className='task' key={props.task.id}>
+        <div className='task' key={task.id}>
             <div className='left_side'>
                 <input 
                     type='checkbox' 
-                    defaultChecked={props.task.isDone}
+                    
+                    defaultChecked={task.done}
                     onClick={handleCheck}
                     />
-                <p>{props.task.name}</p>
+                <p>{task.name}</p>
             </div>
             
             <div className='right_side'>
-                <span>{(new Date(props.task.createdAt)).toLocaleDateString()}</span>
+                <span>{(new Date(task.createdAt)).toLocaleDateString()}</span>
                 <input 
                     type='button' 
                     className='trashcan' 
-                    onClick={() => props.remove(props.task)}    
+                    onClick={() => remove(task)}    
                 />
             </div>
         </div>

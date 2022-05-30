@@ -5,10 +5,10 @@ import Pages from './components/pages';
 import axios, { AxiosError } from 'axios';
 
 
-function App({ target }) {
+function App() {
   const [taskName, setTaskName] = useState('');
   const [tasks, setTasks] = useState([])
-  const [totalTasks, setTotalTasks] = useState(0)
+  const [tasksCount, setTasksCount] = useState(0)
   // disabling sorting buttons
   const [sortAll, setSortAll] = useState(true);
   const [sortDone, setSortDone] = useState(false);
@@ -22,7 +22,7 @@ function App({ target }) {
   useEffect(() => {
     axios.get("https://todo-api-learning.herokuapp.com/v1/tasks/3?pp=5&page=1")
     .then(response => {
-      setTotalTasks(response.data.count)
+      setTasksCount(response.data.count)
       setTasks(response.data.tasks)
     })
     .catch(err => console.log(err));
@@ -33,10 +33,19 @@ function App({ target }) {
     if (props.key === 'Enter' && props.target.value) {
       setTaskName('')
       try {
-        await axios.post("https://todo-api-learning.herokuapp.com/v1/task/3", {
+        const response = await axios.post("https://todo-api-learning.herokuapp.com/v1/task/3", {
           "name": props.target.value,
           "done": false,
         })
+        setTasks(() => {
+          if (sortDownDisabled) {
+            return [response.data, ...tasks].slice(0, 5);
+          } else {
+            return [...tasks, response.data];
+          }
+          
+          })
+          setTasksCount(tasksCount + 1);
       } catch (AxiosError) {
         console.log(AxiosError, 'probably task with the same name')
       }
@@ -45,28 +54,27 @@ function App({ target }) {
   };
 
   const sortByDate = ({ target }) => {
-    if (target.lastChild.data === '↑') {
-      // надо взять все таски одновременно
-      setTasks([...tasks].sort( (a, b) => a.id - b.id));
+
+    if (target.id === '↑') {
+      setTasks([...tasks].sort( (a, b) => new Date(a.createdAt) - new Date(b.createdAt)));
       setSortUpDisabled(true);
       setSortDownDisabled(false);
     }
-    if (target.lastChild.data === '↓') {
-      setTasks([...tasks].sort( (a, b) => b.id - a.id));
+    if (target.id === '↓') {
+      setTasks([...tasks].sort( (a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
       setSortUpDisabled(false);
       setSortDownDisabled(true);
     }
   }
 //  ------------------------------------
   const paginate = async (pageNumber) => {
-    // https://todo-api-learning.herokuapp.com/v1/tasks/3?pp=5&page=
     if (sortDone || sortUndone) {
       const url = `https://todo-api-learning.herokuapp.com/v1/tasks/3?filterBy=${() => sortDone ? 'done' : 'undone'}&order=${() => sortUpDisabled ? 'asc' : 'desc'}&pp=5&page=${pageNumber}`
       const response = await axios.get(url)
-      setTasks(response.data.tasks)
+      setTasks(response.data.tasks.filter(task => task.done == true))
       setCurrentPage(pageNumber);
 
-    } else if (sortDone || sortUndone || sortByDate) {
+    } else {
       const url = `https://todo-api-learning.herokuapp.com/v1/tasks/3?filterBy=order=${() => sortUpDisabled ? 'asc' : 'desc'}&pp=5&page=${pageNumber}`
       const response = await axios.get(url)
       setTasks(response.data.tasks)
@@ -77,29 +85,29 @@ function App({ target }) {
   useMemo( () => {
     switch(sort) {
       case 'all':
-        paginate(1);
         setSortAll(true);
         setSortDone(false);
         setSortUndone(false);
-        return tasks;
+        return paginate(1);
       case 'done':
-        paginate(1);
         setSortAll(false);
         setSortDone(true);
         setSortUndone(false);
-        return tasks.filter( (task) => task.isDone);
+        return paginate(1);
       case 'undone':
-        paginate(1);
         setSortAll(false);
         setSortDone(false);
         setSortUndone(true);
-        return tasks.filter( (task) => !task.isDone)
+        return paginate(1);
     }
 
   }, [sort])
 
   const removeTask = (task) => {
     axios.delete(`https://todo-api-learning.herokuapp.com/v1/task/3/${task.uuid}`)
+    .then(() => {
+      setTasksCount(tasksCount - 1);
+      return paginate(1)})
     .catch(err => console.log(err));
   };
 
@@ -125,13 +133,13 @@ function App({ target }) {
           <div className="flex_date_sort">
               <span>Sort by date</span>
               <button className="btn arrow_btn" id='↑' disabled={sortUpDisabled} onClick={sortByDate}>↑</button>
-              <button className="btn arrow_btn" disabled={sortDownDisabled} onClick={sortByDate}>↓</button>
+              <button className="btn arrow_btn" id='↓' disabled={sortDownDisabled} onClick={sortByDate}>↓</button>
           </div>
       </div>
       
         <TaskList remove={removeTask} tasks={tasks} />
       <Pages 
-        totalTasks={totalTasks}
+        tasksCount={tasksCount}
         paginate={paginate}
         curPage={currentPage}
       />
