@@ -22,10 +22,6 @@ function App() {
     })
     .catch(err => console.log(err));
   }, []);
-
-  useMemo (() => {
-    setPageCount(Math.ceil(tasksCount / 5))
-  }, [tasks])
   
   const addNewTask = async (props) => {
 
@@ -51,21 +47,20 @@ function App() {
       
     }
   };
-//  ------------------------------------
+  
   const paginate = async (pageNumber) => {
-    if (sort === 'done' || sort === 'undone') {
-      const url = `https://todo-api-learning.herokuapp.com/v1/tasks/3?filterBy=${() => sort !== 'all' ? sort + '&' : ''}order=${sortByDate}&pp=5&page=${pageNumber}`
-      const response = await axios.get(url)
-      setTasks(response.data.tasks)
-      setCurrentPage(pageNumber);
+    
+    const url = `https://todo-api-learning.herokuapp.com/v1/tasks/3?filterBy=${sort !== 'all' ? sort + '&' : ''}&order=${sortByDate}&pp=5&page=${pageNumber}`
 
-    } else {
-      const url = `https://todo-api-learning.herokuapp.com/v1/tasks/3?filterBy=order=${sortByDate}&pp=5&page=${pageNumber}`
-      const response = await axios.get(url)
-      setTasks(response.data.tasks)
-      setCurrentPage(pageNumber);
-    }
+    const response = await axios.get(url)
+    setTasks(response.data.tasks)
+    setTasksCount(response.data.count)
+    setCurrentPage(pageNumber);
   }
+
+  useMemo (() => {
+    setPageCount(Math.ceil(tasksCount / 5))
+  }, [tasks])
 
   useMemo( () => {
     switch(sort) {
@@ -108,7 +103,7 @@ function App() {
           </div>
           <div className="flex_date_sort">
               <span>Sort by date</span>
-              <button className="btn arrow_btn" id='↑' disabled={sortByDate === 'asc'} onClick={() => {setSortByDate('asc')}}>↑</button>
+              <button className="btn arrow_btn" id='↑' disabled={sortByDate === 'asc'} onClick={() => setSortByDate('asc')}>↑</button>
               <button className="btn arrow_btn" id='↓' disabled={sortByDate === 'desc'} onClick={() => setSortByDate('desc')}>↓</button>
           </div>
       </div>
