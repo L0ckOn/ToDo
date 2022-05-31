@@ -1,29 +1,18 @@
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
+import TaskEdit from "./taskEdit";
 
 export default function Task({ task, tasks, remove, setTasks}) {
-  const handleCheck = () => {
+
+    const [taskEditHidden, setTaskEditHidden] = useState(true);
+
+    const handleCheck = () => {
     axios
       .patch(`https://todo-api-learning.herokuapp.com/v1/task/3/${task.uuid}`, {
         done: !task.done,
       })
       .catch((err) => console.log(err));
   };
-
-  const handleEdit = async () => {
-      const newName = prompt()
-      axios
-      .patch(`https://todo-api-learning.herokuapp.com/v1/task/3/${task.uuid}`, {
-          name: newName
-      })
-      .then(response => setTasks(tasks.map((post) => {
-        if (post.uuid === response.data.uuid) {
-            post.name = newName
-        }
-        return post;
-      })))
-      .catch(err => console.log(err))
-  }
 
   return (
     <div className="task" key={task.uuid}>
@@ -33,7 +22,13 @@ export default function Task({ task, tasks, remove, setTasks}) {
           defaultChecked={task.done}
           onClick={handleCheck}
         />
-        <p onDoubleClick={handleEdit}>{task.name}</p>
+        
+        {taskEditHidden ? 
+        <p onDoubleClick={() => setTaskEditHidden(false)}>{task.name}</p> :
+        <TaskEdit value={task.name} 
+        setTasks={setTasks} 
+        tasks={tasks}
+        setTaskEditHidden={setTaskEditHidden}/>}
       </div>
 
       <div className="right_side">

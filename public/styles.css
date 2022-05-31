@@ -101,6 +101,15 @@ p {
     text-align: left;
 }
 
+.task-edit>input {
+    width: 300px;
+    background-color: #fff;
+    border: 1px solid lightgrey;
+    border-radius: 7px;
+    font-size: 12pt;
+}
+
+
 @media (max-width: 767px) {
 
     .header_buttons {
@@ -110,6 +119,9 @@ p {
     .task {
         width: 280px;
         
+    }
+    .task-edit>input {
+        width: 100px
     }
 
 }

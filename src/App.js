@@ -39,6 +39,11 @@ function App() {
           if (sortByDate === "desc") {
             return [response.data, ...tasks].slice(0, 5);
           } else {
+            paginate(() => {
+              if (tasksCount > 0 && tasksCount % 5 === 0) {
+                return pageCount + 1;
+              }
+            });
             return [...tasks, response.data].slice(0, 5);
           }
         });
@@ -52,7 +57,7 @@ function App() {
   const paginate = async (pageNumber) => {
     const url = `https://todo-api-learning.herokuapp.com/v1/tasks/3?filterBy=${
       sort !== "all" ? sort : ""
-    }&order=${sortByDate}&pp=5&page=${pageNumber}`;
+    }&order=${sortByDate}&&pp=5&page=${pageNumber}`;
 
     const response = await axios.get(url);
     setTasks(response.data.tasks);
@@ -103,7 +108,6 @@ function App() {
           <button
             className="btn"
             disabled={sort === "all"}
-            on
             onClick={() => setSort("all")}
           >
             All
