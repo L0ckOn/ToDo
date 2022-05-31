@@ -1,14 +1,11 @@
-import React, { useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 
 export default function Pages(props) {
-    console.log(1)
-    const pageNumbers = [];
     
+    const pageNumbers = [];
     for (let i = 1; i <= props.pageCount; i++) {
         pageNumbers.push(i);
     }
-
-    console.log(pageNumbers)
 
     return (
       <div className="page_number_container">
