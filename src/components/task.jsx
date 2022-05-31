@@ -6,12 +6,12 @@ export default function Task({ task, remove }) {
     const handleCheck = () => {
         axios.patch(
             `https://todo-api-learning.herokuapp.com/v1/task/3/${task.uuid}`,
-            {"done": true})
+            {"done": !task.done})
         .catch(err => console.log(err));
     }
 
     return (
-        <div className='task' key={task.id}>
+        <div className='task' key={task.uuid}>
             <div className='left_side'>
                 <input 
                     type='checkbox' 

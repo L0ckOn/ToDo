@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 export default function Pages(props) {
+    console.log(1)
     const pageNumbers = [];
-    const pageCount = Math.ceil(props.tasksCount / 5);
-
-    for (let i = 1; i <= pageCount; i++) {
+    
+    for (let i = 1; i <= props.pageCount; i++) {
         pageNumbers.push(i);
     }
+
+    console.log(pageNumbers)
+
     return (
       <div className="page_number_container">
         <button

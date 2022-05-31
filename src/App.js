@@ -10,18 +10,22 @@ function App() {
   const [tasks, setTasks] = useState([])
   const [tasksCount, setTasksCount] = useState(0)
   const [sort, setSort] = useState('all');
-  const [sortUpDisabled, setSortUpDisabled] = useState(false);
-  const [sortDownDisabled, setSortDownDisabled] = useState(true);
+  const [sortByDate, setSortByDate] = useState('desc');
+  const [pageCount, setPageCount] = useState(0)
   const [currentPage, setCurrentPage] = useState(1)
   
   useEffect(() => {
-    axios.get("https://todo-api-learning.herokuapp.com/v1/tasks/3?pp=5&page=1")
+    axios.get("https://todo-api-learning.herokuapp.com/v1/tasks/3?filterBy=order=desc&pp=5&page=1")
     .then(response => {
       setTasksCount(response.data.count)
       setTasks(response.data.tasks)
     })
     .catch(err => console.log(err));
   }, []);
+
+  useMemo (() => {
+    setPageCount(Math.ceil(tasksCount / 5))
+  }, [tasks])
   
   const addNewTask = async (props) => {
 
@@ -33,7 +37,7 @@ function App() {
           "done": false,
         })
         setTasks(() => {
-          if (sortDownDisabled) {
+          if (sortByDate === 'desc') {
             return [response.data, ...tasks].slice(0, 5);
           } else {
             return [...tasks, response.data].slice(0, 5);
@@ -47,30 +51,16 @@ function App() {
       
     }
   };
-
-  const sortByDate = ({ target }) => {
-
-    if (target.id === '↑') {
-      setTasks([...tasks].sort( (a, b) => new Date(a.createdAt) - new Date(b.createdAt)));
-      setSortUpDisabled(true);
-      setSortDownDisabled(false);
-    }
-    if (target.id === '↓') {
-      setTasks([...tasks].sort( (a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
-      setSortUpDisabled(false);
-      setSortDownDisabled(true);
-    }
-  }
 //  ------------------------------------
   const paginate = async (pageNumber) => {
     if (sort === 'done' || sort === 'undone') {
-      const url = `https://todo-api-learning.herokuapp.com/v1/tasks/3?filterBy=${sort}&order=${() => sortUpDisabled ? 'asc' : 'desc'}&pp=5&page=${pageNumber}`
+      const url = `https://todo-api-learning.herokuapp.com/v1/tasks/3?filterBy=${() => sort !== 'all' ? sort + '&' : ''}order=${sortByDate}&pp=5&page=${pageNumber}`
       const response = await axios.get(url)
       setTasks(response.data.tasks)
       setCurrentPage(pageNumber);
 
     } else {
-      const url = `https://todo-api-learning.herokuapp.com/v1/tasks/3?filterBy=order=${() => sortUpDisabled ? 'asc' : 'desc'}&pp=5&page=${pageNumber}`
+      const url = `https://todo-api-learning.herokuapp.com/v1/tasks/3?filterBy=order=${sortByDate}&pp=5&page=${pageNumber}`
       const response = await axios.get(url)
       setTasks(response.data.tasks)
       setCurrentPage(pageNumber);
@@ -118,8 +108,8 @@ function App() {
           </div>
           <div className="flex_date_sort">
               <span>Sort by date</span>
-              <button className="btn arrow_btn" id='↑' disabled={sortUpDisabled} onClick={sortByDate}>↑</button>
-              <button className="btn arrow_btn" id='↓' disabled={sortDownDisabled} onClick={sortByDate}>↓</button>
+              <button className="btn arrow_btn" id='↑' disabled={sortByDate === 'asc'} onClick={() => {setSortByDate('asc')}}>↑</button>
+              <button className="btn arrow_btn" id='↓' disabled={sortByDate === 'desc'} onClick={() => setSortByDate('desc')}>↓</button>
           </div>
       </div>
       
@@ -128,6 +118,8 @@ function App() {
         tasksCount={tasksCount}
         paginate={paginate}
         curPage={currentPage}
+        pageCount={pageCount}
+        sort={sort}
       />
     </div>
   );
