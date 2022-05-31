@@ -9,12 +9,7 @@ function App() {
   const [taskName, setTaskName] = useState('');
   const [tasks, setTasks] = useState([])
   const [tasksCount, setTasksCount] = useState(0)
-  // disabling sorting buttons
-  const [sortAll, setSortAll] = useState(true);
-  const [sortDone, setSortDone] = useState(false);
-  const [sortUndone, setSortUndone] = useState(false);
   const [sort, setSort] = useState('all');
-  // --------------------------
   const [sortUpDisabled, setSortUpDisabled] = useState(false);
   const [sortDownDisabled, setSortDownDisabled] = useState(true);
   const [currentPage, setCurrentPage] = useState(1)
@@ -41,7 +36,7 @@ function App() {
           if (sortDownDisabled) {
             return [response.data, ...tasks].slice(0, 5);
           } else {
-            return [...tasks, response.data];
+            return [...tasks, response.data].slice(0, 5);
           }
           
           })
@@ -68,10 +63,10 @@ function App() {
   }
 //  ------------------------------------
   const paginate = async (pageNumber) => {
-    if (sortDone || sortUndone) {
-      const url = `https://todo-api-learning.herokuapp.com/v1/tasks/3?filterBy=${() => sortDone ? 'done' : 'undone'}&order=${() => sortUpDisabled ? 'asc' : 'desc'}&pp=5&page=${pageNumber}`
+    if (sort === 'done' || sort === 'undone') {
+      const url = `https://todo-api-learning.herokuapp.com/v1/tasks/3?filterBy=${sort}&order=${() => sortUpDisabled ? 'asc' : 'desc'}&pp=5&page=${pageNumber}`
       const response = await axios.get(url)
-      setTasks(response.data.tasks.filter(task => task.done == true))
+      setTasks(response.data.tasks)
       setCurrentPage(pageNumber);
 
     } else {
@@ -85,19 +80,10 @@ function App() {
   useMemo( () => {
     switch(sort) {
       case 'all':
-        setSortAll(true);
-        setSortDone(false);
-        setSortUndone(false);
         return paginate(1);
       case 'done':
-        setSortAll(false);
-        setSortDone(true);
-        setSortUndone(false);
         return paginate(1);
       case 'undone':
-        setSortAll(false);
-        setSortDone(false);
-        setSortUndone(true);
         return paginate(1);
     }
 
@@ -126,9 +112,9 @@ function App() {
 
       <div className="header_buttons">
           <div>
-          <button className='btn' disabled={sortAll} onClick={() => setSort('all')}>All</button>
-          <button className='btn' disabled={sortDone} onClick={() => setSort('done')}>Done</button>
-          <button className='btn' disabled={sortUndone} onClick={() => setSort('undone')} >Undone</button>
+          <button className='btn' disabled={sort === 'all'} onClick={() => setSort('all')}>All</button>
+          <button className='btn' disabled={sort === 'done'} onClick={() => setSort('done')}>Done</button>
+          <button className='btn' disabled={sort === 'undone'} onClick={() => setSort('undone')} >Undone</button>
           </div>
           <div className="flex_date_sort">
               <span>Sort by date</span>
