@@ -43,11 +43,16 @@ p, span, button, div, h1 {
 
 button:hover {
     background-color: lightgrey;
+    cursor: pointer;
     
 }
 
 button:active {
     box-shadow: none;
+}
+
+button:disabled {
+    cursor: alias;
 }
 
 .header_buttons {
@@ -58,6 +63,13 @@ button:active {
     
     
 
+}
+
+input[type=checkbox] {
+    border-radius: 7px;
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
 }
 
 .tasks_list {
@@ -89,6 +101,15 @@ p {
     text-align: left;
 }
 
+.task-edit>input {
+    width: 300px;
+    background-color: #fff;
+    border: none;
+    border-radius: 7px;
+    font-size: 12pt;
+}
+
+
 @media (max-width: 767px) {
 
     .header_buttons {
@@ -98,6 +119,9 @@ p {
     .task {
         width: 280px;
         
+    }
+    .task-edit>input {
+        width: 100px
     }
 
 }
@@ -117,14 +141,16 @@ p {
 
 .trashcan {
     background: url(https://www.svgrepo.com/show/359400/trashcan.svg)center center/cover no-repeat;
-    height: 30px;
-    width: 30px;
+    height: 20px;
+    width: 20px;
     vertical-align: middle;
     border: none;
+    margin-right: 10px;
 }
 
 .trashcan:hover {
-    background-color: grey;
+    background-color: none;
+    cursor: pointer;
 }
 
 .trashcan:active {
