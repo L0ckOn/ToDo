@@ -28,25 +28,24 @@ function App() {
     if (props.key === "Enter" && props.target.value) {
       setTaskName("");
       try {
-        const response = await axios.post(
+        await axios.post(
           "https://todo-api-learning.herokuapp.com/v1/task/3",
           {
             name: props.target.value,
             done: false,
           }
         );
-        setTasks(() => {
-          if (sortByDate === "desc") {
-            return [response.data, ...tasks].slice(0, 5);
-          } else {
-            paginate(() => {
-              if (tasksCount > 0 && tasksCount % 5 === 0) {
-                return pageCount + 1;
-              }
-            });
-            return [...tasks, response.data].slice(0, 5);
-          }
-        });
+        if (sortByDate === 'asc' && tasksCount > 0 && tasksCount % 5 === 0) {
+          paginate(pageCount + 1)
+
+        } else if (sortByDate === 'asc') {
+          paginate(pageCount);
+
+        } else {
+          paginate(1);
+        }
+        
+        
         setTasksCount(tasksCount + 1);
       } catch (AxiosError) {
         console.log(AxiosError, "probably task with the same name");
@@ -57,7 +56,7 @@ function App() {
   const paginate = async (pageNumber) => {
     const url = `https://todo-api-learning.herokuapp.com/v1/tasks/3?filterBy=${
       sort !== "all" ? sort : ""
-    }&order=${sortByDate}&&pp=5&page=${pageNumber}`;
+    }&order=${sortByDate}&pp=5&page=${pageNumber}`;
 
     const response = await axios.get(url);
     setTasks(response.data.tasks);
@@ -79,6 +78,10 @@ function App() {
         return paginate(1);
     }
   }, [sort]);
+
+  useEffect(() => {
+    paginate(1);
+  }, [sortByDate])
 
   const removeTask = (task) => {
     axios
@@ -135,7 +138,8 @@ function App() {
             disabled={sortByDate === "asc"}
             onClick={() => {
               setSortByDate("asc")
-              paginate(1)}}
+              
+            }}
           >
             ↑
           </button>
@@ -143,9 +147,7 @@ function App() {
             className="btn arrow_btn"
             id="↓"
             disabled={sortByDate === "desc"}
-            onClick={() => {
-              setSortByDate("desc")
-              paginate(1)}}
+            onClick={() => setSortByDate("desc")}
           >
             ↓
           </button>
