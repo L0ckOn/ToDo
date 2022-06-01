@@ -28,7 +28,8 @@ export default function Task({ task, tasks, remove, setTasks}) {
         <TaskEdit value={task.name} 
         setTasks={setTasks} 
         tasks={tasks}
-        setTaskEditHidden={setTaskEditHidden}/>}
+        setTaskEditHidden={setTaskEditHidden}
+        task={task}/>}
       </div>
 
       <div className="right_side">

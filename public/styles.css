@@ -104,7 +104,7 @@ p {
 .task-edit>input {
     width: 300px;
     background-color: #fff;
-    border: 1px solid lightgrey;
+    border: none;
     border-radius: 7px;
     font-size: 12pt;
 }
