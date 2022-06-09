@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import TaskList from "./components/task-list";
 import Pages from "./components/pages";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 
 function App() {
   const [taskName, setTaskName] = useState("");
@@ -15,7 +15,7 @@ function App() {
   useEffect(() => {
     axios
       .get(
-        "https://todo-api-learning.herokuapp.com/v1/tasks/3?filterBy=order=desc&pp=5&page=1"
+        "http://localhost:4000/tasks/filterBy=&order=desc&page=1"
       )
       .then((response) => {
         setTasksCount(response.data.count);
@@ -29,10 +29,12 @@ function App() {
       setTaskName("");
       try {
         await axios.post(
-          "https://todo-api-learning.herokuapp.com/v1/task/3",
+          'http://localhost:4000/tasks/post/',
           {
+            uuid: Date.now(),
             name: props.target.value,
             done: false,
+            createdAt: Date.now()
           }
         );
         if (sortByDate === 'asc' && tasksCount > 0 && tasksCount % 5 === 0) {
@@ -42,30 +44,31 @@ function App() {
           paginate(pageCount);
 
         } else {
-          paginate(1);
+          paginate(1)
         }
-        
-        
-        setTasksCount(tasksCount + 1);
       } catch (AxiosError) {
-        console.log(AxiosError, "probably task with the same name");
+        console.log(AxiosError);
       }
     }
   };
 
   const paginate = async (pageNumber) => {
-    const url = `https://todo-api-learning.herokuapp.com/v1/tasks/3?filterBy=${
+    const url = `http://localhost:4000/tasks/filterBy=${
       sort !== "all" ? sort : ""
-    }&order=${sortByDate}&pp=5&page=${pageNumber}`;
-
-    const response = await axios.get(url);
-    setTasks(response.data.tasks);
-    setTasksCount(response.data.count);
-    setCurrentPage(pageNumber);
+    }&order=${sortByDate}&page=${pageNumber}`;
+    try {
+      const response = await axios.get(url);
+      setTasks(response.data.tasks)
+      setTasksCount(response.data.count);
+      setCurrentPage(pageNumber);
+    } catch (err) {
+      console.log(err)
+    }
   };
 
   useMemo(() => {
     setPageCount(Math.ceil(tasksCount / 5));
+    // console.log(tasksCount)
   }, [tasks]);
 
   useMemo(() => {
@@ -85,11 +88,8 @@ function App() {
 
   const removeTask = (task) => {
     axios
-      .delete(`https://todo-api-learning.herokuapp.com/v1/task/3/${task.uuid}`)
-      .then(() => {
-        setTasksCount(tasksCount - 1);
-        return paginate(1);
-      })
+      .delete(`http://localhost:4000/tasks/${task.uuid}`)
+      .then(() => paginate(currentPage))
       .catch((err) => console.log(err));
   };
 
@@ -153,7 +153,7 @@ function App() {
           </button>
         </div>
       </div>
-
+        
       <TaskList remove={removeTask} tasks={tasks} setTasks={setTasks}/>
       <Pages
         tasksCount={tasksCount}
@@ -162,6 +162,7 @@ function App() {
         pageCount={pageCount}
         sort={sort}
       />
+        
     </div>
   );
 }

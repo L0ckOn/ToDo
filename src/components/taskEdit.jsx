@@ -6,7 +6,7 @@ export default function TaskEdit({ value, setTasks, tasks, task, setTaskEditHidd
     const [newValue, setNewValue] = useState(value)
     const handleEdit = ({ key }) => {
         if (key === 'Enter') {
-            axios.patch(`https://todo-api-learning.herokuapp.com/v1/task/3/${task.uuid}`, {
+            axios.patch(`https://localhost:4000/tasks/${task.uuid}`, {
                 name: newValue
             });
             setTasks(tasks.map((post) => {

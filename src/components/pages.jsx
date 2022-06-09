@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React from "react";
 
 export default function Pages(props) {
   const pageNumbers = [];
