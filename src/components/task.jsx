@@ -8,7 +8,7 @@ export default function Task({ task, tasks, remove, setTasks}) {
 
     const handleCheck = () => {
     axios
-      .patch(`https://todo-api-learning.herokuapp.com/v1/task/3/${task.uuid}`, {
+      .patch(`https://alpaca-express-server.herokuapp.com/tasks/${task.uuid}`, {
         done: !task.done,
       })
       .catch((err) => console.log(err));

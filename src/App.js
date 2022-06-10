@@ -15,7 +15,7 @@ function App() {
   useEffect(() => {
     axios
       .get(
-        "http://localhost:4000/tasks/filterBy=&order=desc&page=1"
+        "https://alpaca-express-server.herokuapp.com/tasks/filterBy=&order=desc&page=1"
       )
       .then((response) => {
         setTasksCount(response.data.count);
@@ -29,7 +29,7 @@ function App() {
       setTaskName("");
       try {
         await axios.post(
-          'http://localhost:4000/tasks/post/',
+          'https://alpaca-express-server.herokuapp.com/tasks/post/',
           {
             uuid: Date.now(),
             name: props.target.value,
@@ -53,7 +53,7 @@ function App() {
   };
 
   const paginate = async (pageNumber) => {
-    const url = `http://localhost:4000/tasks/filterBy=${
+    const url = `https://alpaca-express-server.herokuapp.com/tasks/filterBy=${
       sort !== "all" ? sort : ""
     }&order=${sortByDate}&page=${pageNumber}`;
     try {
@@ -88,7 +88,7 @@ function App() {
 
   const removeTask = (task) => {
     axios
-      .delete(`http://localhost:4000/tasks/${task.uuid}`)
+      .delete(`https://alpaca-express-server.herokuapp.com/tasks/${task.uuid}`)
       .then(() => paginate(currentPage))
       .catch((err) => console.log(err));
   };
